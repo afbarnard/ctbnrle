@@ -7,12 +7,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -53,7 +53,7 @@ CTBNDyn::CTBNDyn(const CTBNDyn &ctbn) : Dynamics(ctbn) {
 	joint = NULL;
 }
 
-CTBNDyn::CTBNDyn(const Structure &s, const Context &vars) : 
+CTBNDyn::CTBNDyn(const Structure &s, const Context &vars) :
 				Dynamics(Context(), Context()) {
 	joint = NULL;
 	vector<vector<int> > parentlist = s.parentlist;
@@ -63,7 +63,7 @@ CTBNDyn::CTBNDyn(const Structure &s, const Context &vars) :
 		vector<int> currentParentlist = parentlist[i];
 		Context v;
 		Context cv;
-		if(vars.HasId(i)) 
+		if(vars.HasId(i))
 			v.AddVar(i,vars.Cardinality(i));
 		else continue;
 
@@ -78,7 +78,7 @@ CTBNDyn::CTBNDyn(const Structure &s, const Context &vars) :
 		AddNode(new MarkovDyn(v,cv));
 	}
 }
-	
+
 
 CTBNDyn &CTBNDyn::operator=(const CTBNDyn &ctbn) {
 	if (&ctbn!=this) {
@@ -177,7 +177,7 @@ void CTBNDyn::Mult(const Dynamics *x) {
 	assert(false);
 }
 
-RVCondSimple *CTBNDyn::Cond(double t0, double t1, 
+RVCondSimple *CTBNDyn::Cond(double t0, double t1,
 				const Instantiation &x) const {
 	static bool usesparse = ParamInt("AvoidJoint",1);
 	if (!usesparse) return Joint()->Cond(t0,t1,x);
@@ -215,7 +215,7 @@ RVCondSimple *CTBNDyn::Cond(double t0, double t1,
 				int lii2 = locald.Index(i2);
 				subQ[ii][rev[i2.Index()]] += localQ[lii1][lii2];
 			}
-		}	
+		}
 		ii++;
 	}
 
@@ -251,13 +251,13 @@ RVCondSimple *CTBNDyn::Cond(double t, const Instantiation &from,
 				dynamic_cast<const DynComp *>(nodes[var2node[chvar]]);
 		if (dyn==NULL) return Joint()->Cond(t,from,to,transition);
 		const Context &locald = dyn->Domain();
-			
+
 		map<int,int> torev;
 		for(unsigned int i=0;i<toind.size();i++)
 			torev[toind[i]] = i;
 
 		int newv = to.Value(chvar);
-		
+
 		int ii = 0;
 		forallassign_except(Instantiation &ifrom,
 							Domain()+CondDomain(),knownfrom) {
@@ -273,7 +273,7 @@ RVCondSimple *CTBNDyn::Cond(double t, const Instantiation &from,
 			subQ[ii][torev[ito.Index()]] += localQ[liifrom][liito];
 			ii++;
 		}
-		
+
 	} else {
 		// ripped straight from markovsimple.cc (should perhaps merge):
           unsigned int i=0,j=0;
@@ -486,7 +486,7 @@ void CTBNDyn::ClearNode2IdMaps() const {
 	children.clear();
 }
 
-// We could just keep the default SampleTrajectory.  However that has 
+// We could just keep the default SampleTrajectory.  However that has
 // a running time O(nm) where n is the number of samples and m is the number
 // of variables.  This method is O(m+nkln(m)) where k is the maximal number of
 // parents in the graph.
@@ -510,27 +510,27 @@ void CTBNDyn::SampleTrajectory(Trajectory &tr, double t, Random &rand) const {
 	}
 
 	while(1) {
-		SampleQueue::Event e;
-		if (!events.Head(e) || e.time>endt) return;
-		int varid = node2var[e.var];
-		tr.AddTransition(varid, e.time, e.value);
-		i.SetVal(varid,e.value);
-		t = e.time;
+		SampleQueue::Event ev;
+		if (!events.Head(ev) || ev.time>endt) return;
+		int varid = node2var[ev.var];
+		tr.AddTransition(varid, ev.time, ev.value);
+		i.SetVal(varid,ev.value);
+		t = ev.time;
 
-		events.Remove(e.var);
-		map<int,vector<int> >::iterator ci = 
-			children.find(node2var[e.var]);
+		events.Remove(ev.var);
+		map<int,vector<int> >::iterator ci =
+			children.find(node2var[ev.var]);
 		vector<int> c;
-		if (ci != children.end() && ci->first == node2var[e.var])
+		if (ci != children.end() && ci->first == node2var[ev.var])
 			c = ci->second;
 		for(unsigned int j=0;j<c.size();j++)
 			events.Remove(c[j]);
 
 		Instantiation newv;
 		double newt;
-		nodes[e.var]->SampleNextEvent(i,t,newt,newv,rand);
-		events.Add(SampleQueue::Event(e.var,
-					newv.Value(node2var[e.var]),newt));
+		nodes[ev.var]->SampleNextEvent(i,t,newt,newv,rand);
+		events.Add(SampleQueue::Event(ev.var,
+					newv.Value(node2var[ev.var]),newt));
 		for(unsigned int j=0;j<c.size();j++) {
 			Instantiation newv;
 			nodes[c[j]]->SampleNextEvent(i,t,newt,newv,rand);
@@ -576,7 +576,7 @@ void CTBNDyn::GetStructure(Structure &s) const {
 	}
 }
 
-void CTBNDyn::Scramble(double a, double b, double alpha, double degree, 
+void CTBNDyn::Scramble(double a, double b, double alpha, double degree,
 			Random &rand) {
 	//Added by Yu
 	int nc = nodes.size();
@@ -601,7 +601,7 @@ matrix CTBNDyn::JointMatrix() const {
 }
 
 
-double CTBNDyn::GetScore(double numTrans, 
+double CTBNDyn::GetScore(double numTrans,
 			 double amtTime, const SS *ss) const {
 	const CTBNDynSS *css = dynamic_cast<const CTBNDynSS* >(ss);
 	css->Compact();
@@ -668,7 +668,7 @@ vector<int> CTBNDyn::GetChildrenByVar(int varid) const {
 	map<int,vector<int> >::iterator it = children.find(varid);
 	if(it == children.end()) return ret;
 	ret = it->second;
-	for(unsigned int i = 0; i < ret.size(); i++) 
+	for(unsigned int i = 0; i < ret.size(); i++)
 		ret[i] = node2var[ret[i]];
 	return ret;
 }
@@ -808,7 +808,7 @@ void CTBNDynSS::Scale(double w) {
     }
 }
 
-double CTBNDynSS::NodeSS(int id, int val1, int val2, 
+double CTBNDynSS::NodeSS(int id, int val1, int val2,
 				const Instantiation &cond) const {
 	vector<int> index;
 	Compact();

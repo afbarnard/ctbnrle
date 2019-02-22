@@ -16,23 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include <cmath>
+#include <cstdio>
+
 #include "samplequeue.h"
 #include "defines.h"
-#include <cmath>
 
-
+using namespace std;
 
 namespace ctbn {
 
 SampleQueue::SampleQueue(int maxn) {
 	heap = new Event[maxn];
 	places = new int[maxn];
+	capacity = maxn;
 	n = 0;
 }
 
 SampleQueue::~SampleQueue() {
 	delete []heap;
 	delete []places;
+}
+
+int SampleQueue::Capacity() {
+  return capacity;
+}
+
+int SampleQueue::Length() {
+  return n;
 }
 
 bool SampleQueue::Head(Event &e) {
@@ -42,6 +54,13 @@ bool SampleQueue::Head(Event &e) {
 }
 
 void SampleQueue::Add(const Event &e) {
+	// Check if capacity exists for event and throw exception if not
+	if (n >= capacity) {
+		char buf[128];
+		snprintf(buf, 128, "SampleQueue::Error: Cannot add event: Queue is full (capacity: %d, length: %d)", capacity, n);
+		throw SampleQueue::Error(buf);
+	}
+	// Add event
 	heap[n] = e;
 	++n;
 	double key = e.time;

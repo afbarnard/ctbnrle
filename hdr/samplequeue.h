@@ -7,19 +7,22 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #ifndef CTBNRLE_SAMPLEQUEUE_H
 #define CTBNRLE_SAMPLEQUEUE_H
 
+#include <exception>
+#include <string>
 
+using namespace std;
 
 namespace ctbn {
 
@@ -43,8 +46,8 @@ class SampleQueue {
 	  // pretty much just a structure
 	  class Event {
 	    public:
-		  Event(int v,int val, double t) { 
-			  var = v; value = val; time = t; 
+		  Event(int v,int val, double t) {
+			  var = v; value = val; time = t;
 		  }
 		  Event() { }
 		  int var;
@@ -52,10 +55,24 @@ class SampleQueue {
 		  double time;
 	  };
 
+	class Error: public exception {
+		const string msg;
+	public:
+		Error(const char * message) : msg(message) {}
+		~Error() throw() {}
+		const char * what() const throw() {
+			return msg.c_str();
+		}
+	};
+
 	  // create a queue with a maximum of maxn variables
 	  SampleQueue(int maxn);
 
 	  ~SampleQueue();
+
+	  int Capacity();
+
+	  int Length();
 
 	  // place the earliest event in e
 	  // return false if there are no events
@@ -73,6 +90,7 @@ class SampleQueue {
 
 	Event *heap;
 	int *places;
+	int capacity;
 	int n;
 };
 
