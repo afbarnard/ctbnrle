@@ -1,0 +1,56 @@
+# Ignore file backups
+*~
+
+# Ignore compilation artifacts
+*.o
+*.lo
+
+# Ignore target library
+src/ctbn.a
+
+# Ignore specific executables
+demo/clique_example
+demo/emlearn
+demo/exactquery
+demo/gen_fulldata
+demo/gen_partialdata
+demo/gibbssampquery
+demo/isquery
+demo/learnparams
+demo/makechain
+demo/makedrug
+demo/makeqinput
+demo/sampleprocess
+demo/sem
+demo/structurelearn
+demo/traj2ascii
+demo/twonode
+demo/using_graphic
+tst/clique_unit_test
+tst/decision
+tst/exactfbquery
+tst/factoredunifquery
+tst/gibbsauxprequery
+tst/gibbsprequery
+tst/gibbsquery
+tst/glpktest
+tst/importanceprequery
+tst/makedrugtst
+tst/makequeryinput
+tst/maketoroid
+tst/meanfieldquery
+tst/sem
+tst/structsearch
+tst/structurescore
+tst/unit_testing_graphic
+
+# Ignore generated data
+demo/drug.ctbn
+demo/drug.ctbndyn
+tst/drug.ctbn
+tst/drug.ctbndyn
+tst/queryinput-toroid.data
+tst/queryinput.data
+
+# Ignore glpk
+glpk/*
