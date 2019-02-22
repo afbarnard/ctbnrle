@@ -2,20 +2,35 @@ EXCLUDE = $(foreach v,$(2),$(if $(findstring $(1),$(v)),,$(v)))
 SRC := $(call EXCLUDE,rk_modified.cc,$(call EXCLUDE,matrix-noeigen.cc,$(call EXCLUDE,matrix-eigen.cc,$(wildcard *.cc))))
 OBJ := $(patsubst %.cc,%.o,$(SRC))
 
+# Use gcc C++
 CXX = g++
-#OFLAGS = -O0
-#OFLAGS = -O2
-OFLAGS = -O3
-#OFLAGS = -march=core2 -msse -msse2 -mfpmath=sse
-#OFLAGS = -mno-sse -mno-sse2
-#OFLAGS = -g -O2 #-O0
-CXXFLAGS += $(OFLAGS)
-CXXFLAGS += -pedantic -Wall -Wextra -Wno-long-long -Wno-unused-local-typedefs -Wno-unused-parameter -Wno-unused-variable
+
+# Debug / Optimization
+CXXFLAGS += -g
+#CXXFLAGS += -O0
+#CXXFLAGS += -O2
+#CXXFLAGS += -O3
+
+# Tuning
+#CXXFLAGS += -march=core2 -msse -msse2 -mfpmath=sse
+#CXXFLAGS += -mno-sse -mno-sse2
+CXXFLAGS += -march=native -mtune=native
+
+# Standards compliance
 CXXFLAGS += -std=c++03
-CXXFLAGS += -Werror -pedantic-errors
-#CXXFLAGS += -g -fpermissive
-CXXFLAGS += -I../hdr
-CXXFLAGS += -I../glpk/glpk-4.47/include -I../glpk/glpk-4.47/src
+CXXFLAGS += -pedantic -pedantic-errors
+
+# Exit on first error
+CXXFLAGS += -Wfatal-errors
+
+# Warnings
+CXXFLAGS += -Wall -Wextra -Wno-long-long -Wno-unused-local-typedefs -Wno-unused-parameter -Wno-unused-variable
+#CXXFLAGS += -Werror
+#CXXFLAGS += -fpermissive
+
+# Includes
+CXXFLAGS += -I ../hdr
+CXXFLAGS += -I ../glpk/glpk-4.47/include -I ../glpk/glpk-4.47/src
 CXXFLAGS += -DUSE_PTHREADS
 LDFLAGS += -lpthread
 

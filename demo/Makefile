@@ -7,13 +7,14 @@ EXES = clique_example makechain makedrug learnparams gibbssampquery sampleproces
 DATA = queryinput.data drug.ctbn drug.ctbndyn
 
 CXX = g++
-OFLAG = -O3
-#OFLAG = -ggdb 
+OFLAG = -g
+#OFLAG = -O3
+#OFLAG = -ggdb
 
-CXXFLAGS += $(OFLAG) -std=c++03 -pedantic -Wall -Wextra -Wno-unused-local-typedefs -Wno-long-long -Wno-unused-parameter -Wno-reorder -Wno-unused-variable
+CXXFLAGS += $(OFLAG) -Wfatal-errors -std=c++03 -pedantic -Wall -Wextra -Wno-unused-local-typedefs -Wno-long-long -Wno-unused-parameter -Wno-reorder -Wno-unused-variable
 CXXFLAGS += -I../hdr -I../tst -I../glpk/glpk-4.47/include -I../glpk/glpk-4.47/src -L../glpk/glpk-4.47/src/.libs
 CXXFLAGS += -DUSE_PTHREADS
-LDFLAGS = -lglpk -lpthread
+LDFLAGS = -lpthread
 
 DEPEND = makedepend -Y -- $(CXXFLAGS) --
 
@@ -54,7 +55,7 @@ learnparams: learnparams.o $(LIBOBJ)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o learnparams learnparams.o $(LIBOBJ)
 
 emlearn: emlearn.o $(LIBOBJ)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o emlearn emlearn.o $(LIBOBJ) -lpthread
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o emlearn emlearn.o $(LIBOBJ)
 
 gibbssampquery: gibbssampquery.o $(LIBOBJ)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o gibbssampquery gibbssampquery.o $(LIBOBJ)

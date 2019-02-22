@@ -3,17 +3,18 @@ SRC := $(wildcard *.cc)
 LIBOBJ = ../src/ctbn.a ../glpk/glpk-4.47/src/.libs/libglpk.a
 
 CXX = g++
+OFLAGS = -g
 #OFLAGS = -O0
 #OFLAGS = -O2
-OFLAGS = -O3
+#OFLAGS = -O3
 CXXFLAGS += $(OFLAGS)
-CXXFLAGS += -pedantic -Wall -Wextra -Wno-unused-local-typedefs -Wno-long-long -Wno-unused-parameter -Wno-unused-variable
+CXXFLAGS += -pedantic -pedantic-errors -Wfatal-errors -Wall -Wextra -Wno-unused-local-typedefs -Wno-long-long -Wno-unused-parameter -Wno-unused-variable
 CXXFLAGS += -std=c++03
-CXXFLAGS += -Werror -pedantic-errors
+#CXXFLAGS += -Werror -pedantic-errors
 CXXFLAGS += -I../hdr
 CXXFLAGS += -I../glpk/glpk-4.47/include -I../glpk/glpk-4.47/src
 CXXFLAGS += -DUSE_PTHREADS
-LDFLAGS += -lpthread -L../glpk/glpk-4.47/src/.libs
+LDFLAGS += -lpthread
 
 GCC_BASE_DIR = /usr/csshare/pkgs/gcc-4.7.0
 GCC_BASE_INCLUDE_DIR = $(GCC_BASE_DIR)/lib/gcc/i686-pc-linux-gnu/4.7.0/include
@@ -46,10 +47,10 @@ drug.ctbndyn: makedrugtst
 	     (rm -f drug.ctbndyn; ./makedrugtst -Dsavedyn 1 > drug.ctbndyn)
 
 decision: decision.o $(LIBOBJ)
-	$(CXX) $(FXXFLAGS) $(LDFLAGS) -o decision decision.o $(LIBOBJ) -lglpk
+	$(CXX) $(FXXFLAGS) $(LDFLAGS) -o decision decision.o $(LIBOBJ)
 
 glpktest: glpktest.o $(LIBOBJ)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o glpktest glpktest.o $(LIBOBJ) -lglpk
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o glpktest glpktest.o $(LIBOBJ)
 
 unit_testing_graphic: unit_testing_graphic.o $(LIBOBJ)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o unit_testing_graphic unit_testing_graphic.o $(LIBOBJ)
@@ -98,7 +99,7 @@ meanfieldquery: meanfieldquery.o $(LIBOBJ)
 
 makedrugtst: makedrugtst.o $(LIBOBJ)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o makedrugtst makedrugtst.o $(LIBOBJ)
-	
+
 maketoroid: maketoroid.o $(LIBOBJ)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o maketoroid maketoroid.o $(LIBOBJ)
 
