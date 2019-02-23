@@ -47,6 +47,7 @@ tst/unit_testing_graphic
 # Ignore generated data
 demo/drug.ctbn
 demo/drug.ctbndyn
+demo/queryinput.data
 tst/drug.ctbn
 tst/drug.ctbndyn
 tst/queryinput-toroid.data
