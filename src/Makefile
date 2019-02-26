@@ -6,7 +6,7 @@ OBJ := $(patsubst %.cc,%.o,$(SRC))
 CXX = g++
 
 # Debug / Optimization
-CXXFLAGS += -g
+CXXFLAGS += -g -O0
 #CXXFLAGS += -O0
 #CXXFLAGS += -O2
 #CXXFLAGS += -O3
@@ -31,7 +31,11 @@ CXXFLAGS += -Wall -Wextra -Wno-long-long -Wno-unused-local-typedefs -Wno-unused-
 # Includes
 CXXFLAGS += -I ../hdr
 CXXFLAGS += -I ../glpk/glpk-4.47/include -I ../glpk/glpk-4.47/src
+
+# Definitions
 CXXFLAGS += -DUSE_PTHREADS
+
+# Libraries
 LDFLAGS += -lpthread
 
 GCC_BASE_DIR = /usr/csshare/pkgs/gcc-4.7.0

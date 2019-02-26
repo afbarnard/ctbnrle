@@ -19,6 +19,7 @@
 
 #include <cmath>
 #include <cstdio>
+#include <stdexcept>
 
 #include "samplequeue.h"
 #include "defines.h"
@@ -27,16 +28,18 @@ using namespace std;
 
 namespace ctbn {
 
-SampleQueue::SampleQueue(int maxn) {
+bool operator==(const SampleQueue::Event & e1, const SampleQueue::Event & e2) {
+  return e1.var == e2.var && e1.value == e2.value && e1.time == e2.time;
+}
+
+SampleQueue::SampleQueue(int maxn) : heap(NULL), places(NULL), capacity(maxn), n(0) {
 	heap = new Event[maxn];
 	places = new int[maxn];
-	capacity = maxn;
-	n = 0;
 }
 
 SampleQueue::~SampleQueue() {
-	delete []heap;
-	delete []places;
+	delete[] heap;
+	delete[] places;
 }
 
 int SampleQueue::Capacity() {
@@ -45,6 +48,15 @@ int SampleQueue::Capacity() {
 
 int SampleQueue::Length() {
   return n;
+}
+
+SampleQueue::Event & SampleQueue::At(int index) {
+  if (index < 0 || index >= n) {
+    char buf[128];
+    snprintf(buf, 128, "Index out of range: !(0 <= %d < %d)", index, n);
+    throw out_of_range(buf);
+  }
+  return heap[index];
 }
 
 bool SampleQueue::Head(Event &e) {

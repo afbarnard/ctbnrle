@@ -486,6 +486,7 @@ void CTBNDyn::ClearNode2IdMaps() const {
 	children.clear();
 }
 
+/*
 // We could just keep the default SampleTrajectory.  However that has
 // a running time O(nm) where n is the number of samples and m is the number
 // of variables.  This method is O(m+nkln(m)) where k is the maximal number of
@@ -539,6 +540,7 @@ void CTBNDyn::SampleTrajectory(Trajectory &tr, double t, Random &rand) const {
 		}
 	}
 }
+/**/
 
 void CTBNDyn::AddNode(Dynamics *d) {
 	nodes.push_back(d);

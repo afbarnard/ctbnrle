@@ -70,9 +70,11 @@ class SampleQueue {
 
 	  ~SampleQueue();
 
-	  int Capacity();
+	int Capacity();
 
-	  int Length();
+	int Length();
+
+	Event & At(int);
 
 	  // place the earliest event in e
 	  // return false if there are no events
@@ -93,6 +95,8 @@ class SampleQueue {
 	int capacity;
 	int n;
 };
+
+bool operator==(const SampleQueue::Event &, const SampleQueue::Event &);
 
 } // end of ctbn namespace
 

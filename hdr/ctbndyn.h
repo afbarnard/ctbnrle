@@ -130,8 +130,8 @@ public:
 	virtual void SampleNextEvent(const Instantiation &i, double t,
 			double &nextt, Instantiation &nexti,
 			Random &rand=randomizer) const;
-	virtual void SampleTrajectory(Trajectory &tr, double t,
-			Random &rand=randomizer) const;
+	//virtual void SampleTrajectory(Trajectory &tr, double t,
+	//		Random &rand=randomizer) const;
 	virtual void Maximize(const SS *ss);
 	virtual double LLH(const SS *ss) const;
 

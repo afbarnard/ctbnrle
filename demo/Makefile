@@ -7,7 +7,7 @@ EXES = clique_example makechain makedrug learnparams gibbssampquery sampleproces
 DATA = queryinput.data drug.ctbn drug.ctbndyn
 
 CXX = g++
-OFLAG = -g
+OFLAG = -g -O0
 #OFLAG = -O3
 #OFLAG = -ggdb
 

@@ -3,7 +3,7 @@ SRC := $(wildcard *.cc)
 LIBOBJ = ../src/ctbn.a ../glpk/glpk-4.47/src/.libs/libglpk.a
 
 CXX = g++
-OFLAGS = -g
+OFLAGS = -g -O0
 #OFLAGS = -O0
 #OFLAGS = -O2
 #OFLAGS = -O3
